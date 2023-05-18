@@ -1,0 +1,246 @@
+version: 0.2
+
+env:
+  variables:
+    shell: bash
+    S3_BUCKET: "krny-spi-codebase-uat/glue/python-shell-scripts"
+    GLUE_JOBS_AND_SCRIPTS: '{ "jobs": 
+    [
+       { "script_name": "krny_trnsf_covid.py", 
+         "job_name": "transformation-covid", 
+         "role_name": "arn:aws:iam::396112814485:role/covid-glue-role",
+         "default_arguments": {
+                                "--enable-job-insights": "false",
+                                "--job-language": "python",
+                                "--job-type": "pythonshell",
+                                "--max_capacity": "1.0",
+                                "--TempDir": "s3://krny-spi-codebase-uat/glue/python-shell-scripts/temp-dir/",
+                                "--enable-glue-datacatalog": "true",
+                                "--library-set": "analytics",
+                                "--bucket": "krny-spi-ext-sources-uat",
+                                "--irm_file": "raw-data/covid/covidexternal/covidexternal3.csv",
+                                "--crawler_cleaneddata": "cleaneddata-crawler",
+                                "--crawler_transformeddata": "transformeddata-crawler",
+                                "--folder": "raw-data/covid",
+                                "--dpu": "1"
+                              }
+       }, 
+       { "script_name": "krny_trnsf_ihs.py", 
+         "job_name": "transformation-ihs", 
+         "role_name": "arn:aws:iam::396112814485:role/ihs-glue-role" ,
+         "default_arguments": {
+                                "--enable-job-insights": "false",
+                                "--job-language": "python",
+                                "--job-type": "pythonshell",
+                                "--max_capacity": "1.0",
+                                "--TempDir": "s3://krny-spi-codebase-uat/glue/python-shell-scripts/temp-dir/",
+                                "--enable-glue-datacatalog": "true",
+                                "--bucket": "krny-spi-ext-sources-uat",
+                                "--folder": "raw-data/ihs",
+                                "--crawler_cleaneddata": "cleaneddata-crawler",
+                                "--crawler_transformeddata": "transformeddata-crawler",
+                                "--library-set": "analytics"
+                              }
+       },
+       {
+         "script_name": "krny_trnsf_fred.py", 
+         "job_name": "transformation-fred", 
+         "role_name": "arn:aws:iam::396112814485:role/fred-glue-role" ,
+         "default_arguments": {
+                                "--enable-job-insights": "false",
+                                "--job-language": "python",
+                                "--job-type": "pythonshell",
+                                "--max_capacity": "1.0",
+                                "--TempDir": "s3://krny-spi-codebase-uat/glue/python-shell-scripts/temp-dir/",
+                                "--enable-glue-datacatalog": "true",
+                                "--library-set": "analytics",
+                                "--bucket": "krny-spi-ext-sources-uat",
+                                "--mapper" : "krny_fred",
+                                "--crawler_cleaneddata": "cleaneddata-crawler",
+                                "--crawler_transformeddata": "transformeddata-crawler",
+                                "--folder": "raw-data/fred"
+                              }
+       }, 
+       {
+         "script_name": "krny_trnsf_google.py", 
+         "job_name": "transformation-google", 
+         "role_name": "arn:aws:iam::396112814485:role/google-glue-role" ,
+         "default_arguments": {
+                                "--enable-job-insights": "false",
+                                "--job-language": "python",
+                                "--job-type": "pythonshell",
+                                "--max_capacity": "1.0",
+                                "--TempDir": "s3://krny-spi-codebase-uat/glue/python-shell-scripts/temp-dir/",
+                                "--enable-glue-datacatalog": "true",
+                                "--bucket": "krny-spi-ext-sources-uat",
+                                "--folder": "raw-data/google",
+                                "--crawler_cleaneddata": "cleaneddata-crawler",
+                                "--crawler_transformeddata": "transformeddata-crawler",
+                                "--prefix" : "raw-data/google_trends1/1900-01-01/",
+                                "--filepath": "cleaned-data/google_trends/",
+                                "--library-set": "analytics"
+                              }
+       },
+       {
+         "script_name": "krny_trnsf_meteostat.py", 
+         "job_name": "transformation-meteostat", 
+         "role_name": "arn:aws:iam::396112814485:role/meteostat-glue-role" ,
+         "default_arguments": {
+                                "--enable-job-insights": "false",
+                                "--job-language": "python",
+                                "--job-type": "pythonshell",
+                                "--max_capacity": "1.0",
+                                "--TempDir": "s3://krny-spi-codebase-uat/glue/python-shell-scripts/temp-dir/",
+                                "--enable-glue-datacatalog": "true",
+                                "--library-set": "analytics",
+                                "--mapped_file": "raw-data/meteostat/config/Mappedweatherstation_by_City.csv",
+                                "--region_file": "raw-data/meteostat/config/US_State_Region.csv",
+                                "--bucket": "krny-spi-ext-sources-uat",
+                                "--crawler_cleaneddata": "cleaneddata-crawler",
+                                "--crawler_transformeddata": "transformeddata-crawler",
+                                "--folder": "raw-data/meteostat"
+                              }
+       },
+       {
+         "script_name": "krny_trnsf_similarweb.py", 
+         "job_name": "transformation-similarweb", 
+         "role_name": "arn:aws:iam::396112814485:role/similarweb-glue-role" ,
+         "default_arguments": {
+                                "--enable-job-insights": "false",
+                                "--job-language": "python",
+                                "--job-type": "pythonshell",
+                                "--max_capacity": "1.0",
+                                "--TempDir": "s3://krny-spi-codebase-uat/glue/python-shell-scripts/temp-dir/",
+                                "--enable-glue-datacatalog": "true",
+                                "--library-set": "analytics",
+                                "--bucket": "krny-spi-ext-sources-uat",
+                                "--crawler_cleaneddata": "cleaneddata-crawler",
+                                "--crawler_transformeddata": "transformeddata-crawler",
+                                "--folder": "raw-data/similar_web"
+                              }
+       },
+       {
+         "script_name": "krny_trnsf_yahoofin.py", 
+         "job_name": "transformation-yahoofin", 
+         "role_name": "arn:aws:iam::396112814485:role/yahoofin-glue-role" ,
+         "default_arguments": {
+                                "--enable-job-insights": "false",
+                                "--job-language": "python",
+                                "--job-type": "pythonshell",
+                                "--max_capacity": "1.0",
+                                "--TempDir": "s3://krny-spi-codebase-uat/glue/python-shell-scripts/temp-dir/",
+                                "--enable-glue-datacatalog": "true",
+                                "--library-set": "analytics",
+                                "--bucket": "krny-spi-ext-sources-uat",
+                                "--table_name": "yahoo_securities",
+                                "--crawler_cleaneddata": "cleaneddata-crawler",
+                                "--crawler_transformeddata": "transformeddata-crawler",
+                                "--folder": "raw-data/yahoo_finance"
+                              }
+       
+       },
+       {               
+         "script_name": "krny_trnsf_moodys.py", 
+         "job_name": "transformation-moodys", 
+         "role_name": "arn:aws:iam::396112814485:role/moodys_glue_role" ,
+         "default_arguments": {
+                                "--enable-job-insights": "false",
+                                "--job-language": "python",
+                                "--job-type": "pythonshell",
+                                "--max_capacity": "1.0",
+                                "--TempDir": "s3://krny-spi-codebase-uat/glue/python-shell-scripts/temp-dir/",
+                                "--enable-glue-datacatalog": "true",
+                                "--library-set": "analytics",
+                                "--bucket": "krny-spi-ext-sources-uat",
+                                "--folder": "raw-data/moodys_all/data",
+                                "--config": "raw-data/moodys_all/config",
+                                "--crawler_cleaneddata": "cleaneddata-crawler",
+                                "--crawler_transformeddata": "transformeddata-crawler"                                      
+                              }
+       },
+       {
+         "script_name": "krny_trnsf_moodys_188.py", 
+         "job_name": "transformation-moodys-188", 
+         "role_name": "arn:aws:iam::396112814485:role/moodys_glue_role" ,
+         "default_arguments": {
+                                "--enable-job-insights": "false",
+                                "--job-language": "python",
+                                "--job-type": "pythonshell",
+                                "--max_capacity": "1.0",
+                                "--TempDir": "s3://krny-spi-codebase-uat/glue/python-shell-scripts/temp-dir/",
+                                "--enable-glue-datacatalog": "true",
+                                "--library-set": "analytics",
+                                "--bucket": "krny-spi-ext-sources-uat",
+                                "--folder": "raw-data/moodys_188/data",
+                                "--config": "raw-data/moodys_188/config",
+                                "--crawler_cleaneddata": "cleaneddata-crawler",
+                                "--crawler_transformeddata": "transformeddata-crawler"                                        
+                              }
+       },
+       {
+         "script_name": "krny-meteostat.py", 
+         "job_name": "ingestion-meteostat", 
+         "role_name": "arn:aws:iam::396112814485:role/glue-ingestion-job-role" ,
+         "default_arguments": {
+                                "--enable-job-insights": "false",
+                                "--job-language": "python",
+                                "--job-type": "pythonshell",
+                                "--max_capacity": "1.0",
+                                "--TempDir": "s3://krny-spi-codebase-uat/glue/python-shell-scripts/temp-dir/",
+                                "--enable-glue-datacatalog": "true",
+                                "--extra-py-files": "s3://krny-spi-ext-sources-uat/python-packages/meteostat-1.6.5-py3-none-any.whl",
+                                "--library-set": "analytics",
+                                "--bucket": "krny-spi-ext-sources-uat",
+                                "--folder": "raw-data/meteostat/data",
+                                "--file_name": "Meteostat_clean",
+                                "--gluejobname": "transformation-meteostat",
+                                "--crawler_cleaneddata": "cleaneddata-crawler",
+                                "--crawler_transformeddata": "transformeddata-crawler",
+                                "--mapper": "s3://krny-spi-ext-sources-uat/raw-data/meteostat/config/Mappedweatherstation_by_City.csv"
+                              }
+       }
+
+    ] 
+   }'
+
+phases:
+  install:
+    commands:
+      - apt-get update && apt-get install -y python3-pip
+      - pip3 install awscli
+    finally:
+      - echo This always runs even if the update or install command fails 
+
+  build:
+    commands:
+      - |
+        for job in $(echo $GLUE_JOBS_AND_SCRIPTS | jq -c '.jobs[]'); do
+          script_name=$(echo $job | jq -r '.script_name')
+          job_name=$(echo $job | jq -r '.job_name')
+          role_name=$(echo $job | jq -r '.role_name')
+          default_arguments=$(echo $job | jq -r '.default_arguments')
+          
+          echo "Updating Glue job: $job_name"
+          cd $CODEBUILD_SRC_DIR
+        
+          # Download existing code from S3 to CodeBuild
+          aws s3 cp s3://$S3_BUCKET/${script_name} $CODEBUILD_SRC_DIR/glue_jobs/${job_name}/old_code.py
+          
+          
+          # Compare new and existing code, and upload new code if changes are detected
+          if ! cmp -s $CODEBUILD_SRC_DIR/glue_jobs/${job_name}/${script_name} $CODEBUILD_SRC_DIR/glue_jobs/${job_name}/old_code.py; then
+            aws s3 cp $CODEBUILD_SRC_DIR/glue_jobs/${job_name}/${script_name} s3://$S3_BUCKET/${script_name}
+            aws glue update-job --job-name ${job_name} --job-update "{\"Command\": {\"Name\": \"pythonshell\",\"PythonVersion\": \"3.9\",\"ScriptLocation\": \"s3://${S3_BUCKET}/${script_name}\"}, \"Role\": \"${role_name}\", \"DefaultArguments\": ${default_arguments}}"
+          else
+            echo "No changes found in $script_name for $job_name, skipping Glue job update and S3 copy"
+          fi
+        done
+    finally:
+      - echo Installation Completed......
+  post_build:
+    commands:
+      - echo Entered the post_build phase......
+      - echo Build completed on `date`
+      
+      
+
